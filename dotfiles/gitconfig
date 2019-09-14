@@ -1,0 +1,18 @@
+[core]
+  autocrlf = input
+  excludesfile = ~/.gitignore
+	editor = vim
+
+[user]
+  # User credentials in ~/.gitconfig.local
+
+  # Do not guess the user's identity.
+  useConfigOnly = true
+
+[include]
+  # Load local configs.
+  # https://git-scm.com/docs/git-config#_includes
+  #
+  # This needs to remain at the end of this file in order to allow any of the
+  # above configs to be overwritten by the local ones.
+  path = ~/.gitconfig_local

@@ -1,0 +1,98 @@
+#!/bin/bash
+
+red='\033[1;31m'
+green='\033[1;32m'
+no_colour='\033[0m'
+no_colour_bold='\033[1m'
+
+print_result() {
+  if [ "$1" -eq 0 ]; then
+    print_success "$2"
+  else
+    print_error "$2"
+  fi
+  return "$1"
+}
+
+print_colour() {
+  printf "$1$2$no_colour"
+}
+
+print_multiline() {
+  print_colour "$no_colour_bold" \
+               "\n$1\n\n"
+}
+
+print_heading() {
+  print_colour "$no_colour_bold" \
+               "\n$1\n\n"
+}
+
+print_notification() {
+  print_colour "$no_colour_bold" \
+               "[ • ] $1\n"
+}
+
+print_success() {
+  print_colour "$green" \
+               "[ ✔︎ ] $1\n"
+}
+
+print_error() {
+  print_colour "$red" \
+               "[ ✘ ] $1\n"
+}
+
+create_symlink() {
+  local source_file="$1"
+  local target_file="$2"
+
+  # Check to see if the source file exists because 'ln' doesn't.
+  if [ -e "$source_file" ]; then
+    if ln -fs "$source_file" "$target_file"; then
+      print_success "$target_file → $source_file"
+      return 0
+    fi
+  fi
+
+  print_error "$target_file → $source_file"
+  return 1
+}
+
+start_notice() {
+cat << EOF
+//////////////////////////////////////////////////////////////////
+//                                                              //
+//  Mac Setup                                                   //
+//                                                              //
+//////////////////////////////////////////////////////////////////
+//                                                              //
+//  This script will install/configure:                         //
+//    • Dotfiles                                                //
+//    • Homebrew                                                //
+//    • Zsh                                                     //
+//    • Git                                                     //
+//    • SSH Keys                                                //
+//    • Prezto                                                  //
+//    • rbenv (Ruby)                                            //
+//    • Rails                                                   //
+//    • PostgreSQL                                              //
+//    • Vim                                                     //
+//    • Sublime Text Settings                                   //
+//    • MacOS Settings                                          //
+//                                                              //
+//////////////////////////////////////////////////////////////////
+EOF
+}
+
+end_notice() {
+cat << EOF
+//////////////////////////////////////////////////////////////////
+//                                                              //
+//  All done! ^_^                                               //
+//                                                              //
+//  You must open a new shell for some changes to take effect.  //
+//                                                              //
+//////////////////////////////////////////////////////////////////
+EOF
+}

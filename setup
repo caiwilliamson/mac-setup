@@ -1,0 +1,356 @@
+#!/bin/bash
+
+# Only proceed if Xcode Command Line Tools is installed.
+xcode-select -p &>/dev/null
+if [ $? -ne 0 ]; then
+  printf "Please install Xcode Command Line Tools first:\nxcode-select --install\n"
+  exit 1
+fi
+
+# Define variables.
+mac_setup="$HOME/.mac-setup" # Installation directory.
+github_username="caiwilliamson"
+
+# Clone mac-setup if it doesn't already exist.
+if [ ! -d $mac_setup ]; then
+  mkdir $mac_setup
+  git clone https://github.com/$github_username/mac-setup.git $mac_setup
+fi
+
+cd $mac_setup
+
+# Include utilities.
+. utilities
+
+print_multiline "$(start_notice)"
+
+read -e -p "Enter 'yes' to continue: " choice
+[ "$choice" == "yes" ] || exit 1
+
+
+############
+# Dotfiles #
+############
+
+print_heading "Dotfiles"
+
+# Symlink dotfiles.
+for dotfile in $mac_setup/dotfiles/*; do
+  create_symlink $dotfile $HOME/.$(basename $dotfile)
+done
+
+# Symlink local dotfiles.
+for dotfile in $HOME/Dropbox/Documents/Dev/dotfiles_local/*; do
+  create_symlink $dotfile $HOME/.$(basename $dotfile)
+done
+
+
+############
+# Homebrew #
+############
+
+print_heading "Homebrew"
+
+# Install Homebrew.
+if [ ! $(command -v brew) ]; then
+  printf "\n" | /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  #        └─ Simulate ENTER keypress.
+
+  # Exit if installation fails.
+  [ $? -ne 0 ] && print_error "Homebrew" && exit 1
+fi
+print_success "Homebrew"
+
+
+#######
+# Zsh #
+#######
+
+print_heading "Zsh"
+
+# Install Zsh.
+if [ ! $(command -v /usr/local/bin/zsh) ]; then
+  brew install zsh
+
+  # Exit if installation fails.
+  [ $? -ne 0 ] && print_error "Zsh" && exit 1
+fi
+print_success "Zsh"
+
+# Add Zsh path to '/etc/shells'.
+if [ ! $(grep "/usr/local/bin/zsh" /etc/shells) ]; then
+  sudo sh -c "printf '/usr/local/bin/zsh\n' >> /etc/shells"
+fi
+print_result $? "Zsh: Add '/usr/local/bin/zsh' to '/etc/shells'"
+
+# Change login shell to Zsh.
+if [ $SHELL != /usr/local/bin/zsh ]; then
+  sudo chsh -s /usr/local/bin/zsh $USER
+fi
+print_result $? "Zsh: Change login shell to '/usr/local/bin/zsh'"
+
+# Check that '/usr/local/bin/zsh' is being used.
+[ "$(which zsh)" == "/usr/local/bin/zsh" ]
+print_result $? "Zsh: Using /usr/local/bin/zsh"
+
+
+#######
+# Git #
+#######
+
+print_heading "Git"
+
+# Install Git.
+if [ ! $(command -v /usr/local/bin/git) ]; then
+  brew install git
+
+  # Exit if installation fails.
+  [ $? -ne 0 ] && print_error "Git" && exit 1
+fi
+print_success "Git"
+
+# Check that '/usr/local/bin/git' is being used.
+[ "$(which git)" == "/usr/local/bin/git" ]
+print_result $? "Git: Using /usr/local/bin/git"
+
+
+############
+# SSH Keys #
+############
+
+print_heading "SSH Keys"
+
+ssh_key="$HOME/.ssh/id_rsa"
+
+# Set up new keys if either key (public or private) is missing.
+if [ ! -e $ssh_key ] || [ ! -e $ssh_key.pub ]; then
+  # Generate a new key pair.
+  key_name="$(hostname)_$(date '+%Y-%m-%d_%H:%M:%S')"
+  ssh-keygen -t rsa -b 4096 -C "$key_name" -f "$ssh_key"
+  print_result $? "SSH Keys: Generate a new key pair"
+
+  # Create an SSH config file and set it to automatically load keys
+  # into the ssh-agent and store passphrases in the keychain.
+  if [ ! -e $HOME/.ssh/config ]; then
+    touch $HOME/.ssh/config
+    printf "Host *\n" >> $HOME/.ssh/config
+    printf "  AddKeysToAgent yes\n" >> $HOME/.ssh/config
+    printf "  UseKeychain yes\n" >> $HOME/.ssh/config
+    printf "  IdentityFile $ssh_key\n" >> $HOME/.ssh/config
+  fi
+  print_result $? "SSH Keys: Create an SSH config file: '$HOME/.ssh/config'"
+
+  # Purge all identities from the ssh-agent. Identities will be added
+  # automatically by the SHH config when needed.
+  ssh-add -D &>/dev/null
+
+  # Add the public key to Github. 3 attempts so we don't spam the API
+  # and get locked out.
+  public_key="$(cat $ssh_key.pub)"
+  for run in {1..3}
+  do
+    key_uploaded="$(curl -f -s \
+                    -u "$github_username" \
+                    --data "{\"title\":\"$key_name\",\"key\":\"$public_key\"}" \
+                    https://api.github.com/user/keys \
+                  )"
+
+    if [ -n "$key_uploaded" ]; then
+      print_success "SSH Keys: Add the public key to Github"
+      break # Success. Exit loop.
+    fi
+  done
+
+  if [ -z "$key_uploaded" ]; then
+    # Failed all 3 attempts to add the public key to Github.
+    print_error "SSH Keys: Add the public key to Github"
+    # Remove keys.
+    rm $ssh_key $ssh_key.pub
+    # Purge all identities from the ssh-agent.
+    ssh-add -D &>/dev/null
+
+    print_notification "Cleaning up..."
+    print_notification "Removed '$ssh_key' and '$ssh_key.pub'"
+    print_notification "Removed all identities from ssh-agent."
+
+    # Exit.
+    exit 1
+  fi
+else
+  print_success "SSH Keys: Existing key pair found"
+fi
+
+# Test connection to Github.
+ssh -T git@github.com
+# Exit if connection fails.
+[ $? -ne 1 ] && print_error "SSH Keys: Test connection to Github" && exit 1
+print_success "SSH Keys: Test connection to Github"
+
+# Make mac-setup use the SSH remote url now that SSH is set up.
+git remote set-url origin git@github.com:$github_username/mac-setup.git
+
+
+##########
+# Prezto #
+##########
+
+print_heading "Prezto"
+
+prezto="$HOME/.zprezto" # Installation directory.
+
+# Clone your fork of Prezto.
+if [ ! -d $prezto ]; then
+  git clone --recursive git@github.com:$github_username/prezto.git $prezto
+
+  # Exit if installation fails.
+  [ $? -ne 0 ] && print_error "Prezto" && exit 1
+fi
+print_success "Prezto"
+
+# Symlink Prezto configs.
+for rcfile in $prezto/runcoms/*; do
+  case $rcfile in (*README.md*) continue; esac # Ignore 'README.md'.
+  create_symlink $rcfile "$HOME/.$(basename $rcfile)"
+done
+
+cd $prezto
+
+# Set upstream.
+prezto_upstream=git@github.com:sorin-ionescu/prezto.git
+if ! git remote set-url upstream $prezto_upstream &>/dev/null; then
+  git remote add upstream $prezto_upstream
+fi
+print_result $? "Prezto: Set upstream to '$prezto_upstream'"
+
+# Checkout branch 'custom'.
+if ! git checkout custom; then
+  git checkout -t origin/custom
+fi
+print_result $? "Prezto: Checkout branch 'custom' (tracking remote branch 'origin/custom')"
+
+
+################
+# rbenv (Ruby) #
+################
+
+print_heading "rbenv"
+
+# Install rbenv.
+if [ ! $(command -v rbenv) ]; then
+  brew install rbenv
+
+  # Exit if installation fails.
+  [ $? -ne 0 ] && print_error "rbenv" && exit 1
+fi
+print_success "$(rbenv -v)"
+
+# Get number of latest Ruby version, e.g. '2.6.4'.
+latest_ruby_version="$(rbenv install -l | grep -v - | tail -1 | tr -d '[[:space:]]')"
+
+# Install latest Ruby version.
+if ! rbenv version | grep -q "$latest_ruby_version"; then
+  rbenv install $latest_ruby_version
+fi
+print_result $? "rbenv: Install latest Ruby ($latest_ruby_version)"
+
+# Set global Ruby version.
+rbenv global $latest_ruby_version
+print_result $? "rbenv: Set global Ruby ($latest_ruby_version)"
+
+# Initialise rbenv in Bash and verify the installation.
+source $HOME/.bash_profile
+curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-doctor | bash
+print_result $? "rbenv: Verify installation (rbenv-doctor)"
+
+
+#########
+# Rails #
+#########
+
+print_heading "Rails"
+
+# Install Rails.
+if [ $(gem list '^rails$' -i) == "false" ]; then
+  gem install rails
+fi
+[ $? -eq 0 ] && print_success "$(rails -v)"
+
+
+##############
+# PostgreSQL #
+##############
+print_heading "PostgreSQL"
+
+# Install PostgreSQL.
+if [ ! $(command -v /usr/local/bin/psql) ]; then
+  brew install postgresql
+fi
+print_result $? "PostgreSQL"
+
+if [ $(command -v psql) ]; then
+  # Start PostgresSQL.
+  brew services restart postgresql
+  print_result $? "PostgreSQL: Started"
+  # Wait a bit to ensure PostgreSQL has started.
+  sleep 1
+  # Create a database for the current user.
+  if ! psql -lqt | cut -d \| -f 1 | grep -qw "$USER"; then
+    createdb
+  fi
+  print_result $? "PostgreSQL: Create database '$USER'"
+fi
+
+
+#######
+# Vim #
+#######
+
+print_heading "Vim"
+
+# Install Vim.
+if [ ! $(command -v /usr/local/bin/vim) ]; then
+  brew install vim
+fi
+print_result $? "Vim"
+
+
+#########################
+# Sublime Text Settings #
+#########################
+
+print_heading "Sublime Text Settings"
+
+# Symlink 'subl' executable.
+create_symlink /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl \
+               /usr/local/bin/subl
+
+# Symlink Sublime Text preferences.
+for sublime_text_user_dir in $HOME/Library/Application\ Support/Sublime\ Text*/Packages/User; do
+  create_symlink $mac_setup/app-settings/Preferences.sublime-settings \
+                 "$sublime_text_user_dir"/Preferences.sublime-settings
+done
+
+
+##################
+# MacOS Settings #
+##################
+
+print_heading "MacOS Settings"
+
+# Disable the annoying line marks in Terminal.
+defaults write com.apple.Terminal ShowLineMarks -int 0
+print_result $? "MacOS Settings: Disable the annoying line marks in Terminal"
+
+
+#################
+# Finishing up! #
+#################
+
+print_heading "Finishing up!"
+
+brew update
+print_result $? "brew update"
+brew upgrade
+print_result $? "brew upgrade"
+
+print_multiline "$(end_notice)"
