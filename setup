@@ -301,6 +301,22 @@ if [ $(command -v psql) ]; then
 fi
 
 
+#################
+# Node.js & npm #
+#################
+
+print_heading "Node.js & npm"
+
+# Install Node.js and npm.
+if [ ! $(command -v /usr/local/bin/node) ]; then
+  brew install node
+fi
+print_result $? "Node.js $(node -v)"
+
+command -v /usr/local/bin/npm &>/dev/null
+print_result $? "npm $(npm -v)"
+
+
 #######
 # Vim #
 #######

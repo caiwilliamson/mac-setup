@@ -12,6 +12,7 @@ Installs/configures:
 * rbenv (Ruby)
 * Rails
 * PostgreSQL
+* Node.js & npm
 * Vim
 * Sublime Text Settings
 * MacOS Settings
