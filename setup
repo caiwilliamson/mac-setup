@@ -341,6 +341,10 @@ print_heading "MacOS Settings"
 defaults write com.apple.Terminal ShowLineMarks -int 0
 print_result $? "MacOS Settings: Disable the annoying line marks in Terminal"
 
+# Stop requests to use new disks for Time Machine backups.
+defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
+print_result $? "MacOS Settings: Stop requests to use new disks for Time Machine backups"
+
 
 #################
 # Finishing up! #
