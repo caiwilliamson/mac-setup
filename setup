@@ -40,7 +40,7 @@ for dotfile in $mac_setup/dotfiles/*; do
 done
 
 # Symlink local dotfiles.
-for dotfile in $HOME/Dropbox/Documents/Dev/dotfiles_local/*; do
+for dotfile in $HOME/Dropbox/Documents/Dev/local_dotfiles/*; do
   create_symlink $dotfile $HOME/.$(basename $dotfile)
 done
 
