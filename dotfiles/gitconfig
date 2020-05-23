@@ -4,7 +4,7 @@
 	editor = vim
 
 [user]
-  # User credentials in ~/.gitconfig.local
+  # User credentials in ~/.gitconfig_local
 
   # Do not guess the user's identity.
   useConfigOnly = true
