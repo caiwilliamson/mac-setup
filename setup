@@ -120,7 +120,7 @@ print_result $? "Git: Using /usr/local/bin/git"
 
 print_heading "SSH Keys"
 
-ssh_key="$HOME/.ssh/id_rsa"
+ssh_key="$HOME/.ssh/github"
 
 # Set up new keys if either key (public or private) is missing.
 if [ ! -e $ssh_key ] || [ ! -e $ssh_key.pub ]; then
