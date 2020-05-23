@@ -362,6 +362,12 @@ defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 print_result $? "MacOS Settings: Stop requests to use new disks for Time Machine backups"
 
 
+####################
+# Terminal Profile #
+####################
+./set_terminal_profile.applescript
+
+
 #################
 # Finishing up! #
 #################

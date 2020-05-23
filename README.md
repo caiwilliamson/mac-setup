@@ -16,6 +16,7 @@ Installs/configures:
 * Vim
 * Sublime Text Settings
 * MacOS Settings
+* Terminal Profile
 
 ## Installation
 ```bash
