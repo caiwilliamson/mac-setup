@@ -67,15 +67,7 @@ print_success "Homebrew"
 #######
 
 print_heading "Zsh"
-
-# Install Zsh.
-if [ ! $(command -v /usr/local/bin/zsh) ]; then
-  brew install zsh
-
-  # Exit if installation fails.
-  [ $? -ne 0 ] && print_error "Zsh" && exit 1
-fi
-print_success "Zsh"
+brew_install "Zsh" "zsh"
 
 # Add Zsh path to '/etc/shells'.
 if [ ! $(grep "/usr/local/bin/zsh" /etc/shells) ]; then
@@ -99,15 +91,7 @@ print_result $? "Zsh: Using /usr/local/bin/zsh"
 #######
 
 print_heading "Git"
-
-# Install Git.
-if [ ! $(command -v /usr/local/bin/git) ]; then
-  brew install git
-
-  # Exit if installation fails.
-  [ $? -ne 0 ] && print_error "Git" && exit 1
-fi
-print_success "Git"
+brew_install "Git" "git"
 
 # Check that '/usr/local/bin/git' is being used.
 [ "$(which git)" == "/usr/local/bin/git" ]
@@ -234,15 +218,7 @@ print_result $? "Prezto: Checkout branch 'custom' (tracking remote branch 'origi
 ################
 
 print_heading "rbenv"
-
-# Install rbenv.
-if [ ! $(command -v rbenv) ]; then
-  brew install rbenv
-
-  # Exit if installation fails.
-  [ $? -ne 0 ] && print_error "rbenv" && exit 1
-fi
-print_success "$(rbenv -v)"
+brew_install "rbenv" "rbenv"
 
 # Get number of latest Ruby version, e.g. '2.6.4'.
 latest_ruby_version="$(rbenv install --list-all | grep -v - | tail -1 | tr -d '[[:space:]]')"
@@ -282,13 +258,9 @@ print_success "Rails"
 ##############
 # PostgreSQL #
 ##############
-print_heading "PostgreSQL"
 
-# Install PostgreSQL.
-if [ ! $(command -v /usr/local/bin/psql) ]; then
-  brew install postgresql
-fi
-print_result $? "PostgreSQL"
+print_heading "PostgreSQL"
+brew_install "PostgreSQL" "postgresql"
 
 if [ $(command -v psql) ]; then
   # Start PostgresSQL.
