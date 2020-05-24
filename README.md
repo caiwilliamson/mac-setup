@@ -7,7 +7,7 @@ Installs/configures:
 * Homebrew
 * Zsh
 * Git
-* SSH Keys
+* GitHub SSH Keys
 * Prezto
 * rbenv (Ruby)
 * Rails

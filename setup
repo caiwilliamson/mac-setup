@@ -98,11 +98,11 @@ brew_install "Git" "git"
 print_result $? "Git: Using /usr/local/bin/git"
 
 
-############
-# SSH Keys #
-############
+###################
+# GitHub SSH Keys #
+###################
 
-print_heading "SSH Keys"
+print_heading "GitHub SSH Keys"
 
 ssh_key="$HOME/.ssh/github"
 
@@ -111,7 +111,7 @@ if [ ! -e $ssh_key ] || [ ! -e $ssh_key.pub ]; then
   # Generate a new key pair.
   key_name="$(hostname)_$(date '+%Y-%m-%d_%H:%M:%S')"
   ssh-keygen -t rsa -b 4096 -C "$key_name" -f "$ssh_key"
-  print_result $? "SSH Keys: Generate a new key pair"
+  print_result $? "GitHub SSH Keys: Generate a new key pair"
 
   # Create an SSH config file and set it to automatically load keys
   # into the ssh-agent and store passphrases in the keychain.
@@ -122,7 +122,7 @@ if [ ! -e $ssh_key ] || [ ! -e $ssh_key.pub ]; then
     printf "  UseKeychain yes\n" >> $HOME/.ssh/config
     printf "  IdentityFile $ssh_key\n" >> $HOME/.ssh/config
   fi
-  print_result $? "SSH Keys: Create an SSH config file: '$HOME/.ssh/config'"
+  print_result $? "GitHub SSH Keys: Create an SSH config file: '$HOME/.ssh/config'"
 
   # Purge all identities from the ssh-agent. Identities will be added
   # automatically by the SHH config when needed.
@@ -140,14 +140,14 @@ if [ ! -e $ssh_key ] || [ ! -e $ssh_key.pub ]; then
                   )"
 
     if [ -n "$key_uploaded" ]; then
-      print_success "SSH Keys: Add the public key to Github"
+      print_success "GitHub SSH Keys: Add the public key to Github"
       break # Success. Exit loop.
     fi
   done
 
   if [ -z "$key_uploaded" ]; then
     # Failed all 3 attempts to add the public key to Github.
-    print_error "SSH Keys: Add the public key to Github"
+    print_error "GitHub SSH Keys: Add the public key to Github"
     # Remove keys.
     rm $ssh_key $ssh_key.pub
     # Purge all identities from the ssh-agent.
@@ -161,14 +161,14 @@ if [ ! -e $ssh_key ] || [ ! -e $ssh_key.pub ]; then
     exit 1
   fi
 else
-  print_success "SSH Keys: Existing key pair found"
+  print_success "GitHub SSH Keys: Existing key pair found"
 fi
 
 # Test connection to Github.
 ssh -T git@github.com
 # Exit if connection fails.
-[ $? -ne 1 ] && print_error "SSH Keys: Test connection to Github" && exit 1
-print_success "SSH Keys: Test connection to Github"
+[ $? -ne 1 ] && print_error "GitHub SSH Keys: Test connection to Github" && exit 1
+print_success "GitHub SSH Keys: Test connection to Github"
 
 # Make mac-setup use the SSH remote url now that SSH is set up.
 git remote set-url origin git@github.com:$github_username/mac-setup.git
