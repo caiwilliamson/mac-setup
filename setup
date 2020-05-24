@@ -212,6 +212,8 @@ if ! git checkout custom &>/dev/null; then
 fi
 print_result $? "Prezto: Checkout branch 'custom' (tracking remote branch 'origin/custom')"
 
+cd $mac_setup
+
 
 ################
 # rbenv (Ruby) #
@@ -330,7 +332,11 @@ print_result $? "MacOS Settings: Stop requests to use new disks for Time Machine
 ####################
 # Terminal Profile #
 ####################
+
+print_heading "Terminal Profile"
+
 ./set_terminal_profile.applescript
+print_result $? "Terminal Profile: Set profile"
 
 
 #################
