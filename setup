@@ -272,8 +272,11 @@ print_heading "Rails"
 # Install Rails.
 if [ $(gem list '^rails$' -i) == "false" ]; then
   gem install rails
+
+  # Exit if installation fails.
+  [ $? -ne 0 ] && print_error "Rails" && exit 1
 fi
-[ $? -eq 0 ] && print_success "$(rails -v)"
+print_success "Rails"
 
 
 ##############
