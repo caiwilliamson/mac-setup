@@ -245,7 +245,7 @@ fi
 print_success "$(rbenv -v)"
 
 # Get number of latest Ruby version, e.g. '2.6.4'.
-latest_ruby_version="$(rbenv install -l | grep -v - | tail -1 | tr -d '[[:space:]]')"
+latest_ruby_version="$(rbenv install --list-all | grep -v - | tail -1 | tr -d '[[:space:]]')"
 
 # Install latest Ruby version.
 if ! rbenv version | grep -q "$latest_ruby_version"; then
