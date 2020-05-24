@@ -128,7 +128,7 @@ if [ ! -e $ssh_key ] || [ ! -e $ssh_key.pub ]; then
   # automatically by the SHH config when needed.
   ssh-add -D &>/dev/null
 
-  # Add the public key to Github. 3 attempts so we don't spam the API
+  # Add the public key to GitHub. 3 attempts so we don't spam the API
   # and get locked out.
   public_key="$(cat $ssh_key.pub)"
   for run in {1..3}
@@ -140,14 +140,14 @@ if [ ! -e $ssh_key ] || [ ! -e $ssh_key.pub ]; then
                   )"
 
     if [ -n "$key_uploaded" ]; then
-      print_success "GitHub SSH Keys: Add the public key to Github"
+      print_success "GitHub SSH Keys: Add the public key to GitHub"
       break # Success. Exit loop.
     fi
   done
 
   if [ -z "$key_uploaded" ]; then
-    # Failed all 3 attempts to add the public key to Github.
-    print_error "GitHub SSH Keys: Add the public key to Github"
+    # Failed all 3 attempts to add the public key to GitHub.
+    print_error "GitHub SSH Keys: Add the public key to GitHub"
     # Remove keys.
     rm $ssh_key $ssh_key.pub
     # Purge all identities from the ssh-agent.
@@ -164,11 +164,11 @@ else
   print_success "GitHub SSH Keys: Existing key pair found"
 fi
 
-# Test connection to Github.
+# Test connection to GitHub.
 ssh -T git@github.com
 # Exit if connection fails.
-[ $? -ne 1 ] && print_error "GitHub SSH Keys: Test connection to Github" && exit 1
-print_success "GitHub SSH Keys: Test connection to Github"
+[ $? -ne 1 ] && print_error "GitHub SSH Keys: Test connection to GitHub" && exit 1
+print_success "GitHub SSH Keys: Test connection to GitHub"
 
 # Make mac-setup use the SSH remote url now that SSH is set up.
 git remote set-url origin git@github.com:$github_username/mac-setup.git
