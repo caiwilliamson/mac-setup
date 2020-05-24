@@ -223,7 +223,7 @@ fi
 print_result $? "Prezto: Set upstream to '$prezto_upstream'"
 
 # Checkout branch 'custom'.
-if ! git checkout custom; then
+if ! git checkout custom &>/dev/null; then
   git checkout -t origin/custom
 fi
 print_result $? "Prezto: Checkout branch 'custom' (tracking remote branch 'origin/custom')"
