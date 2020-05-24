@@ -276,33 +276,23 @@ if [ $(command -v psql) ]; then
 fi
 
 
-#################
-# Node.js & npm #
-#################
+##########################
+# Miscellaneous Packages #
+##########################
 
-print_heading "Node.js & npm"
+print_heading "Miscellaneous Packages"
+brew_install "Vim" "vim"
+brew_install "node" "node"
+brew_install "Yarn" "yarn"
+brew_install "Redis" "redis"
+brew_install "AWS CLI" "awscli"
+brew_install "AWS Elastic Beanstalk CLI" "awsebcli"
+brew_install "jq" "jq"
+brew_install "Heroku" "heroku" "heroku/brew"
 
-# Install Node.js and npm.
-if [ ! $(command -v /usr/local/bin/node) ]; then
-  brew install node
-fi
-print_result $? "Node.js $(node -v)"
-
-command -v /usr/local/bin/npm &>/dev/null
-print_result $? "npm $(npm -v)"
-
-
-#######
-# Vim #
-#######
-
-print_heading "Vim"
-
-# Install Vim.
-if [ ! $(command -v /usr/local/bin/vim) ]; then
-  brew install vim
-fi
-print_result $? "Vim"
+brew_install "axel" "axel"
+brew_install "youtube-dl" "youtube-dl"
+brew_install "ffmpeg" "ffmpeg"
 
 
 #########################
