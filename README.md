@@ -12,8 +12,16 @@ Installs/configures:
 * rbenv (Ruby)
 * Rails
 * PostgreSQL
-* Node.js & npm
-* Vim
+* Miscellaneous Packages
+  * Vim
+  * Node.js & npm
+  * Yarn
+  * Redis
+  * AWS CLI
+  * AWS Elastic Beanstalk CLI
+  * jq
+  * Heroku
+
 * Sublime Text Settings
 * MacOS Settings
 * Terminal Profile
