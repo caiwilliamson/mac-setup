@@ -21,7 +21,6 @@ Installs/configures:
   * AWS Elastic Beanstalk CLI
   * jq
   * Heroku
-
 * Sublime Text Settings
 * MacOS Settings
 * Terminal Profile
