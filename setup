@@ -170,11 +170,11 @@ else
   print_success "GitHub SSH Keys: Existing key pair found"
 fi
 
-# Test connection to GitHub.
+# Authenticate with GitHub.
 ssh -T git@github.com &>/dev/null
-# Exit if connection fails.
-[ $? -ne 1 ] && print_error "GitHub SSH Keys: Test connection to GitHub" && exit 1
-print_success "GitHub SSH Keys: Test connection to GitHub"
+# Exit if authentication fails.
+[ $? -ne 1 ] && print_error "GitHub SSH Keys: Authenticate with GitHub" && exit 1
+print_success "GitHub SSH Keys: Authenticate with GitHub"
 
 # Make mac-setup use the SSH remote url now that SSH is set up.
 git remote set-url origin git@github.com:$github_username/mac-setup.git
