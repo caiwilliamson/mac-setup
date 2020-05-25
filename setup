@@ -113,15 +113,21 @@ if [ ! -e $ssh_key ] || [ ! -e $ssh_key.pub ]; then
   ssh-keygen -t rsa -b 4096 -C "$key_name" -f "$ssh_key"
   print_result $? "GitHub SSH Keys: Generate a new key pair"
 
-  # Create an SSH config file and set it to automatically load keys
-  # into the ssh-agent and store passphrases in the keychain.
+  # Create an SSH config file.
   if [ ! -e $HOME/.ssh/config ]; then
     touch $HOME/.ssh/config
-    printf "Host *\n" >> $HOME/.ssh/config
-    printf "  AddKeysToAgent yes\n" >> $HOME/.ssh/config
-    printf "  UseKeychain yes\n" >> $HOME/.ssh/config
-    printf "  IdentityFile $ssh_key\n" >> $HOME/.ssh/config
   fi
+
+  cat <<EOF > $HOME/.ssh/config
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+
+Host github.com
+    User git
+    HostName github.com
+    IdentityFile $ssh_key
+EOF
   print_result $? "GitHub SSH Keys: Create an SSH config file: '$HOME/.ssh/config'"
 
   # Purge all identities from the ssh-agent. Identities will be added
