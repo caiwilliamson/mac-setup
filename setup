@@ -171,7 +171,7 @@ else
 fi
 
 # Test connection to GitHub.
-ssh -T git@github.com
+ssh -T git@github.com &>/dev/null
 # Exit if connection fails.
 [ $? -ne 1 ] && print_error "GitHub SSH Keys: Test connection to GitHub" && exit 1
 print_success "GitHub SSH Keys: Test connection to GitHub"
