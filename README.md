@@ -21,6 +21,9 @@ Installs/configures:
   * AWS Elastic Beanstalk CLI
   * jq
   * Heroku
+  * axel
+  * youtube-dl
+  * ffmpeg
 * Sublime Text Settings
 * MacOS Settings
 * Terminal Profile
