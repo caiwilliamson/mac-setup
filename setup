@@ -284,6 +284,20 @@ if [ $(command -v psql) ]; then
 fi
 
 
+#########
+# Redis #
+#########
+
+print_heading "Redis"
+brew_install "Redis" "redis"
+
+if [ $(command -v redis-cli) ]; then
+  # Start Redis.
+  brew services restart redis
+  print_result $? "Redis: Started"
+fi
+
+
 ##########################
 # Miscellaneous Packages #
 ##########################
@@ -292,7 +306,6 @@ print_heading "Miscellaneous Packages"
 brew_install "Vim" "vim"
 brew_install "Node.js & npm" "node"
 brew_install "Yarn" "yarn"
-brew_install "Redis" "redis"
 brew_install "AWS CLI" "awscli"
 brew_install "AWS Elastic Beanstalk CLI" "awsebcli"
 brew_install "jq" "jq"

@@ -12,11 +12,11 @@ Installs/configures:
 * rbenv (Ruby)
 * Rails
 * PostgreSQL
+* Redis
 * Miscellaneous Packages
   * Vim
   * Node.js & npm
   * Yarn
-  * Redis
   * AWS CLI
   * AWS Elastic Beanstalk CLI
   * jq
