@@ -39,11 +39,6 @@ for dotfile in $mac_setup/dotfiles/*; do
   create_symlink $dotfile $HOME/.$(basename $dotfile)
 done
 
-# Symlink local dotfiles.
-for dotfile in $HOME/Dropbox/Documents/Dev/local_dotfiles/*; do
-  create_symlink $dotfile $HOME/.$(basename $dotfile)
-done
-
 
 ############
 # Homebrew #
