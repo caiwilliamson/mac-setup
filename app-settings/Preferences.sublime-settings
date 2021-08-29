@@ -3,9 +3,15 @@
 	"bold_folder_labels": true,
 	"find_selected_text": true,
 	"font_size": 12,
+	"ignored_packages":
+	[
+		"Vintage",
+	],
 	"mini_diff": "auto",
 	"show_full_path": true,
 	"tab_size": 2,
 	"translate_tabs_to_spaces": true,
-	"trim_trailing_white_space_on_save": true
+	"trim_trailing_white_space_on_save": true,
+	"theme": "auto",
+	"color_scheme": "Packages/Color Scheme - Default/Monokai.sublime-color-scheme",
 }
