@@ -329,8 +329,6 @@ print_success "nvm"
 print_heading "Miscellaneous Packages"
 brew_install "Vim" "vim"
 brew_install "Yarn" "yarn"
-brew_install "AWS CLI" "awscli"
-brew_install "AWS Elastic Beanstalk CLI" "awsebcli"
 brew_install "jq" "jq"
 brew_install "Heroku" "heroku" "heroku/brew"
 

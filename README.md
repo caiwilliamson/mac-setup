@@ -17,8 +17,6 @@ Installs/configures:
 * Miscellaneous Packages
   * Vim
   * Yarn
-  * AWS CLI
-  * AWS Elastic Beanstalk CLI
   * jq
   * Heroku
   * axel
