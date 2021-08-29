@@ -25,6 +25,7 @@ Installs/configures:
   * youtube-dl
   * ffmpeg
 * Sublime Text Settings
+* Sublime Merge Settings
 * MacOS Settings
 * Terminal Profile
 

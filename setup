@@ -356,6 +356,16 @@ for sublime_text_user_dir in $HOME/Library/Application\ Support/Sublime\ Text*/P
 done
 
 
+##########################
+# Sublime Merge Settings #
+##########################
+
+print_heading "Sublime Merge Settings"
+
+create_symlink /Applications/Sublime\ Merge.app/Contents/SharedSupport/bin/smerge \
+               /usr/local/bin/smerge
+
+
 ##################
 # MacOS Settings #
 ##################

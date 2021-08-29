@@ -113,6 +113,7 @@ cat << EOF
 //      • youtube-dl                                            //
 //      • ffmpeg                                                //
 //    • Sublime Text Settings                                   //
+//    • Sublime Merge Settings                                  //
 //    • MacOS Settings                                          //
 //    • Terminal Profile                                        //
 //                                                              //
