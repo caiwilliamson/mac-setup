@@ -13,9 +13,9 @@ Installs/configures:
 * Rails
 * PostgreSQL
 * Redis
+* nvm (Node.js & npm)
 * Miscellaneous Packages
   * Vim
-  * Node.js & npm
   * Yarn
   * AWS CLI
   * AWS Elastic Beanstalk CLI
