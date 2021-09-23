@@ -48,7 +48,7 @@ print_heading "Homebrew"
 
 # Install Homebrew.
 if [ ! $(command -v brew) ]; then
-  printf "\n" | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  printf "\n" | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   #        └─ Simulate ENTER keypress.
 
   # Exit if installation fails.
