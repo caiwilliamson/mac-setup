@@ -57,6 +57,30 @@ fi
 print_success "Homebrew"
 
 
+########
+# Fish #
+########
+
+print_heading "Fish"
+brew_install "Fish" "fish"
+
+# Add Fish path to '/etc/shells'.
+if [ ! $(grep "/usr/local/bin/fish" /etc/shells) ]; then
+  sudo sh -c "printf '/usr/local/bin/fish\n' >> /etc/shells"
+fi
+print_result $? "Fish: Add '/usr/local/bin/fish' to '/etc/shells'"
+
+# Change login shell to Fish.
+if [ $SHELL != /usr/local/bin/fish ]; then
+  sudo chsh -s /usr/local/bin/fish $USER
+fi
+print_result $? "Fish: Change login shell to '/usr/local/bin/fish'"
+
+# Check that '/usr/local/bin/fish' is being used.
+[ "$(which fish)" == "/usr/local/bin/fish" ]
+print_result $? "Fish: Using /usr/local/bin/fish"
+
+
 #######
 # Git #
 #######
@@ -213,6 +237,7 @@ fi
 
 print_heading "Miscellaneous Packages"
 brew_install "Vim" "vim"
+brew_install "asdf" "asdf"
 
 
 #########################
@@ -262,6 +287,8 @@ print_result $? "MacOS Settings: Stop requests to use new disks for Time Machine
 ####################
 
 print_heading "Terminal Profile"
+
+brew_install "Nerd Fonts - Hack" "font-hack-nerd-font" "homebrew/cask-fonts" "cask"
 
 ./set_terminal_profile.applescript
 print_result $? "Terminal Profile: Set profile"

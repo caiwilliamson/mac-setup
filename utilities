@@ -63,6 +63,7 @@ brew_install() {
   formula_readable_name="$1"
   formula="$2"
   tap_value="$3"
+  cask="$4"
 
   if [ -n "$tap_value" ]; then
     if ! brew tap "$tap_value"; then
@@ -75,9 +76,15 @@ brew_install() {
     print_success "$formula_readable_name"
   else
     # Install package.
-    brew install $formula
-    # Exit if installation fails.
-    [ $? -ne 0 ] && print_error "$formula_readable_name" && exit 1
+    if [ -n "$cask" ]; then
+      brew install --cask $formula
+      # Exit if installation fails.
+      [ $? -ne 0 ] && print_error "$formula_readable_name" && exit 1
+    else
+      brew install $formula
+      # Exit if installation fails.
+      [ $? -ne 0 ] && print_error "$formula_readable_name" && exit 1
+    fi
     print_success "$formula_readable_name"
   fi
 }
@@ -93,6 +100,7 @@ cat << EOF
 //  This script will install/configure:                         //
 //    • Dotfiles                                                //
 //    • Homebrew                                                //
+//    • Fish                                                    //
 //    • Git                                                     //
 //    • GitHub SSH Keys                                         //
 //    • Rails                                                   //
@@ -100,6 +108,7 @@ cat << EOF
 //    • Redis                                                   //
 //    • Miscellaneous Packages                                  //
 //      • Vim                                                   //
+//      • asdf                                                  //
 //    • Sublime Text Settings                                   //
 //    • Sublime Merge Settings                                  //
 //    • MacOS Settings                                          //
