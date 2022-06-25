@@ -58,30 +58,6 @@ print_success "Homebrew"
 
 
 #######
-# Zsh #
-#######
-
-print_heading "Zsh"
-brew_install "Zsh" "zsh"
-
-# Add Zsh path to '/etc/shells'.
-if [ ! $(grep "/usr/local/bin/zsh" /etc/shells) ]; then
-  sudo sh -c "printf '/usr/local/bin/zsh\n' >> /etc/shells"
-fi
-print_result $? "Zsh: Add '/usr/local/bin/zsh' to '/etc/shells'"
-
-# Change login shell to Zsh.
-if [ $SHELL != /usr/local/bin/zsh ]; then
-  sudo chsh -s /usr/local/bin/zsh $USER
-fi
-print_result $? "Zsh: Change login shell to '/usr/local/bin/zsh'"
-
-# Check that '/usr/local/bin/zsh' is being used.
-[ "$(which zsh)" == "/usr/local/bin/zsh" ]
-print_result $? "Zsh: Using /usr/local/bin/zsh"
-
-
-#######
 # Git #
 #######
 
@@ -180,73 +156,6 @@ print_success "GitHub SSH Keys: Authenticate with GitHub"
 git remote set-url origin git@github.com:$github_username/mac-setup.git
 
 
-##########
-# Prezto #
-##########
-
-print_heading "Prezto"
-
-prezto="$HOME/.zprezto" # Installation directory.
-
-# Clone your fork of Prezto.
-if [ ! -d $prezto ]; then
-  git clone --recursive git@github.com:$github_username/prezto.git $prezto
-
-  # Exit if installation fails.
-  [ $? -ne 0 ] && print_error "Prezto" && exit 1
-fi
-print_success "Prezto"
-
-# Symlink Prezto configs.
-for rcfile in $prezto/runcoms/*; do
-  case $rcfile in (*README.md*) continue; esac # Ignore 'README.md'.
-  create_symlink $rcfile "$HOME/.$(basename $rcfile)"
-done
-
-cd $prezto
-
-# Set upstream.
-prezto_upstream=git@github.com:sorin-ionescu/prezto.git
-if ! git remote set-url upstream $prezto_upstream &>/dev/null; then
-  git remote add upstream $prezto_upstream
-fi
-print_result $? "Prezto: Set upstream to '$prezto_upstream'"
-
-# Checkout branch 'custom'.
-if ! git checkout custom &>/dev/null; then
-  git checkout -t origin/custom
-fi
-print_result $? "Prezto: Checkout branch 'custom' (tracking remote branch 'origin/custom')"
-
-cd $mac_setup
-
-
-################
-# rbenv (Ruby) #
-################
-
-print_heading "rbenv"
-brew_install "rbenv" "rbenv"
-
-# Get number of latest Ruby version, e.g. '2.6.4'.
-latest_ruby_version="$(rbenv install --list-all | grep -v - | tail -1 | tr -d '[[:space:]]')"
-
-# Install latest Ruby version.
-if ! rbenv version | grep -q "$latest_ruby_version"; then
-  rbenv install $latest_ruby_version
-fi
-print_result $? "rbenv: Install latest Ruby ($latest_ruby_version)"
-
-# Set global Ruby version.
-rbenv global $latest_ruby_version
-print_result $? "rbenv: Set global Ruby ($latest_ruby_version)"
-
-# Initialise rbenv in Bash and verify the installation.
-source $HOME/.bash_profile
-curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-doctor | bash
-print_result $? "rbenv: Verify installation (rbenv-doctor)"
-
-
 #########
 # Rails #
 #########
@@ -298,38 +207,12 @@ if [ $(command -v redis-cli) ]; then
 fi
 
 
-#######
-# nvm #
-#######
-
-print_heading "nvm"
-
-# Install nvm.
-if [ ! $(command -v nvm) ]; then
-  export NVM_DIR="$HOME/.nvm" && (
-    git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR"
-    cd "$NVM_DIR"
-    git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
-  ) && \. "$NVM_DIR/nvm.sh"
-  # Install the latest release of node and set as default.
-  nvm install node
-fi
-print_success "nvm"
-
-
 ##########################
 # Miscellaneous Packages #
 ##########################
 
 print_heading "Miscellaneous Packages"
 brew_install "Vim" "vim"
-brew_install "Yarn" "yarn"
-brew_install "jq" "jq"
-brew_install "Heroku" "heroku" "heroku/brew"
-
-brew_install "axel" "axel"
-brew_install "youtube-dl" "youtube-dl"
-brew_install "ffmpeg" "ffmpeg"
 
 
 #########################
