@@ -5,23 +5,15 @@ A script to automatically set up my programming environment. It's idempotent (sa
 Installs/configures:
 * Dotfiles
 * Homebrew
-* Zsh
+* Fish
 * Git
 * GitHub SSH Keys
-* Prezto
-* rbenv (Ruby)
 * Rails
 * PostgreSQL
 * Redis
-* nvm (Node.js & npm)
 * Miscellaneous Packages
   * Vim
-  * Yarn
-  * jq
-  * Heroku
-  * axel
-  * youtube-dl
-  * ffmpeg
+  * asdf
 * Sublime Text Settings
 * Sublime Merge Settings
 * MacOS Settings
