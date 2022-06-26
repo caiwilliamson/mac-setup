@@ -101,6 +101,7 @@ cat << EOF
 //    • Dotfiles                                                //
 //    • Homebrew                                                //
 //    • Fish                                                    //
+//    • Fisher                                                  //
 //    • asdf                                                    //
 //    • Ruby                                                    //
 //    • Node.js                                                 //
