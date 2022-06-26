@@ -81,20 +81,6 @@ print_result $? "Fish: Change login shell to '/usr/local/bin/fish'"
 print_result $? "Fish: Using /usr/local/bin/fish"
 
 
-##########
-# Fisher #
-##########
-print_heading "Fisher"
-
-if [ ! $(command -v fisher) ]; then
-  curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
-
-  # Exit if installation fails.
-  [ $? -ne 0 ] && print_error "Fisher" && exit 1
-fi
-print_success "Fisher"
-
-
 ########
 # asdf #
 ########
