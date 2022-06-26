@@ -100,7 +100,7 @@ print_heading "Ruby"
 brew_install "Ruby Dependencies" "openssl@1.1 readline"
 
 asdf plugin add ruby https://github.com/asdf-vm/asdf-ruby.git
-print_result $? "Install asdf-ruby plugin"
+print_success "Install asdf-ruby plugin"
 
 asdf install ruby latest
 print_result $? "Install Ruby"
@@ -116,7 +116,7 @@ print_result $? "Set global Ruby"
 print_heading "Node.js"
 
 asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
-print_result $? "Install asdf-nodejs plugin"
+print_success "Install asdf-nodejs plugin"
 
 asdf install nodejs latest
 print_result $? "Install Node.js"
