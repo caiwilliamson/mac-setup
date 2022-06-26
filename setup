@@ -81,6 +81,50 @@ print_result $? "Fish: Change login shell to '/usr/local/bin/fish'"
 print_result $? "Fish: Using /usr/local/bin/fish"
 
 
+########
+# asdf #
+########
+
+print_heading "asdf"
+brew_install "asdf" "asdf"
+
+
+########
+# Ruby #
+########
+
+print_heading "Ruby"
+
+# https://github.com/asdf-vm/asdf-ruby#install
+# https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
+brew_install "Ruby Dependencies" "openssl@1.1 readline"
+
+asdf plugin add ruby https://github.com/asdf-vm/asdf-ruby.git
+print_result $? "Install asdf-ruby plugin"
+
+asdf install ruby latest
+print_result $? "Install Ruby"
+
+asdf global ruby latest
+print_result $? "Set global Ruby"
+
+
+###########
+# Node.js #
+###########
+
+print_heading "Node.js"
+
+asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+print_result $? "Install asdf-nodejs plugin"
+
+asdf install nodejs latest
+print_result $? "Install Node.js"
+
+asdf global nodejs latest
+print_result $? "Set global Node.js"
+
+
 #######
 # Git #
 #######
@@ -237,7 +281,6 @@ fi
 
 print_heading "Miscellaneous Packages"
 brew_install "Vim" "vim"
-brew_install "asdf" "asdf"
 
 
 #########################
