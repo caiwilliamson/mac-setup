@@ -113,8 +113,7 @@ brew_install "Ruby: Dependencies" "openssl@1.1 readline"
 
 asdf plugin add ruby https://github.com/asdf-vm/asdf-ruby.git
 case $? in
-  0) print_success "Ruby: Install asdf-ruby plugin";;
-  2) print_success "Ruby: asdf-ruby plugin already installed";;
+  0|2) print_success "Ruby: Install asdf-ruby plugin";;
   *) print_error "Ruby: Install asdf-ruby plugin" && exit 1
 esac
 
@@ -133,8 +132,7 @@ print_heading "Node.js"
 
 asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
 case $? in
-  0) print_success "Node.js: Install asdf-nodejs plugin";;
-  2) print_success "Node.js: asdf-nodejs plugin already installed";;
+  0|2) print_success "Node.js: Install asdf-nodejs plugin";;
   *) print_error "Node.js: Install asdf-nodejs plugin" && exit 1
 esac
 
