@@ -97,6 +97,9 @@ print_result $? "Fish: Using /usr/local/bin/fish"
 print_heading "asdf"
 brew_install "asdf" "asdf"
 
+# Source asdf in the current shell.
+. $(brew --prefix asdf)/libexec/asdf.sh
+
 
 ########
 # Ruby #
