@@ -6,14 +6,15 @@ Installs/configures:
 * Dotfiles
 * Homebrew
 * Fish
+* asdf
+* Ruby
+* Node.js
 * Git
 * GitHub SSH Keys
 * Rails
 * PostgreSQL
 * Redis
-* Miscellaneous Packages
-  * Vim
-  * asdf
+* Vim
 * Sublime Text Settings
 * Sublime Merge Settings
 * MacOS Settings

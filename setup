@@ -275,11 +275,11 @@ if [ $(command -v redis-cli) ]; then
 fi
 
 
-##########################
-# Miscellaneous Packages #
-##########################
+#######
+# Vim #
+#######
 
-print_heading "Miscellaneous Packages"
+print_heading "Vim"
 brew_install "Vim" "vim"
 
 
