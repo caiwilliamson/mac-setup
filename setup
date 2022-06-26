@@ -97,16 +97,21 @@ print_heading "Ruby"
 
 # https://github.com/asdf-vm/asdf-ruby#install
 # https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
-brew_install "Ruby Dependencies" "openssl@1.1 readline"
+brew_install "Ruby: Dependencies" "openssl@1.1 readline"
 
 asdf plugin add ruby https://github.com/asdf-vm/asdf-ruby.git
-print_success "Install asdf-ruby plugin"
+case $? in
+  0) print_success "Ruby: Install asdf-ruby plugin";;
+  2) print_success "Ruby: asdf-ruby plugin already installed";;
+  *) print_error "Ruby: Install asdf-ruby plugin" && exit 1
+esac
+print_success "Ruby: Install asdf-ruby plugin"
 
 asdf install ruby latest
-print_result $? "Install Ruby"
+print_result $? "Ruby: Install Ruby with asdf"
 
 asdf global ruby latest
-print_result $? "Set global Ruby"
+print_result $? "Ruby: Set global Ruby with asdf"
 
 
 ###########
@@ -116,13 +121,17 @@ print_result $? "Set global Ruby"
 print_heading "Node.js"
 
 asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
-print_success "Install asdf-nodejs plugin"
+case $? in
+  0) print_success "Node.js: Install asdf-nodejs plugin";;
+  2) print_success "Node.js: asdf-nodejs plugin already installed";;
+  *) print_error "Node.js: Install asdf-nodejs plugin" && exit 1
+esac
 
 asdf install nodejs latest
-print_result $? "Install Node.js"
+print_result $? "Node.js: Install Node.js with asdf"
 
 asdf global nodejs latest
-print_result $? "Set global Node.js"
+print_result $? "Node.js: Set global Node.js with asdf"
 
 
 #######
@@ -331,7 +340,7 @@ print_result $? "MacOS Settings: Stop requests to use new disks for Time Machine
 
 print_heading "Terminal Profile"
 
-brew_install "Nerd Fonts - Hack" "font-hack-nerd-font" "homebrew/cask-fonts" "cask"
+brew_install "Terminal Profile: Install Hack font" "font-hack-nerd-font" "homebrew/cask-fonts" "cask"
 
 ./set_terminal_profile.applescript
 print_result $? "Terminal Profile: Set profile"
