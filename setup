@@ -35,7 +35,7 @@ read -e -p "Enter 'yes' to continue: " choice
 print_heading "Dotfiles"
 
 # Symlink dotfiles.
-for dotfile in $mac_setup/dotfiles/*; do
+for dotfile in $mac_setup/dotfiles/*(D); do
   create_symlink $dotfile $HOME/.$(basename $dotfile)
 done
 
