@@ -114,7 +114,6 @@ case $? in
   2) print_success "Ruby: asdf-ruby plugin already installed";;
   *) print_error "Ruby: Install asdf-ruby plugin" && exit 1
 esac
-print_success "Ruby: Install asdf-ruby plugin"
 
 asdf install ruby latest
 print_result $? "Ruby: Install Ruby with asdf"
