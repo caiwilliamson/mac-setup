@@ -21,7 +21,7 @@ Installs/configures:
 * Terminal Profile
 
 ## Prerequisites
-Make sure you have a personal access token on your GitHub account with the `write:public_key` permission. When the script asks for your GitHub password, enter this key. This will allow the script to upload your new GitHub SSH public key if one is generated. You can view you personal access tokens and create new ones [here][1].
+Make sure you have a personal access token on your GitHub account with the `write:public_key` permission. When the script asks for your GitHub password, enter this key. This will allow the script to upload your new GitHub SSH public key if one is generated. You can view your personal access tokens and create new ones [here][1].
 
 ## Installation
 ```bash
