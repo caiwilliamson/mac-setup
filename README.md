@@ -16,7 +16,6 @@ Installs/configures:
 * Redis
 * Vim
 * Sublime Text Settings
-* Sublime Merge Settings
 * MacOS Settings
 * Terminal Profile
 
