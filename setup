@@ -76,6 +76,7 @@ print_success "Homebrew"
 # Add Homebrew directories to PATH for the current shell session.
 eval "$($brew_path shellenv)"
 
+# Check that the right executable is being used.
 [ "$(which brew)" == $brew_path ]
 print_result $? "Homebrew: Using $brew_path"
 
@@ -101,7 +102,7 @@ if [ $SHELL != $fish_path ]; then
 fi
 print_result $? "Fish: Change login shell to $fish_path"
 
-# Check that '$fish_path' is being used.
+# Check that the right executable is being used.
 [ "$(which fish)" == $fish_path ]
 print_result $? "Fish: Using $fish_path"
 
@@ -166,9 +167,11 @@ print_result $? "Node.js: Set global Node.js with asdf"
 print_heading "Git"
 brew_install "Git" "git"
 
-# Check that '$homebrew_prefix/bin/git' is being used.
-[ "$(which git)" == "$homebrew_prefix/bin/git" ]
-print_result $? "Git: Using $homebrew_prefix/bin/git"
+git_path="$homebrew_prefix/bin/git"
+
+# Check that the right executable is being used.
+[ "$(which git)" == $git_path ]
+print_result $? "Git: Using $git_path"
 
 
 ###################
