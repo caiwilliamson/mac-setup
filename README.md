@@ -25,7 +25,7 @@ Make sure you have a personal access token on your GitHub account with the `writ
 
 ## Installation
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/caiwilliamson/mac-setup/master/setup)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/caiwilliamson/mac-setup/master/setup)"
 ```
 
 [1]: https://github.com/settings/tokens
