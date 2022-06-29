@@ -77,12 +77,12 @@ brew_install() {
   else
     # Install package.
     if [ -n "$cask" ]; then
-      if ! brew install --cask "$formula"; then
+      if ! brew install --cask $formula; then
         # Exit if installation fails.
         print_error "$formula_readable_name" && exit 1
       fi
     else
-      if ! brew install "$formula"; then
+      if ! brew install $formula; then
         # Exit if installation fails.
         print_error "$formula_readable_name" && exit 1
       fi
