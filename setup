@@ -1,30 +1,28 @@
 #!/bin/bash
 
 # Only proceed if Xcode Command Line Tools is installed.
-xcode-select -p &>/dev/null
-if [ $? -ne 0 ]; then
-  printf "Please install Xcode Command Line Tools first:\nxcode-select --install\n"
-  exit 1
+if ! xcode-select -p &>/dev/null; then
+  printf "Please install Xcode Command Line Tools first:\nxcode-select --install\n" && exit 1
 fi
 
 # Define variables.
-mac_setup="$HOME/.mac-setup" # Installation directory.
-github_username="caiwilliamson"
+mac_setup=$HOME/.mac-setup # Installation directory.
+github_username=caiwilliamson
 
 # Clone mac-setup if it doesn't already exist.
-if [ ! -d $mac_setup ]; then
-  mkdir $mac_setup
-  git clone https://github.com/$github_username/mac-setup.git $mac_setup
+if [ ! -d "$mac_setup" ]; then
+  mkdir "$mac_setup"
+  git clone https://github.com/$github_username/mac-setup.git "$mac_setup"
 fi
 
-cd $mac_setup
+cd "$mac_setup" || exit 1
 
 # Include utilities.
 . utilities
 
 print_multiline "$(start_notice)"
 
-read -e -p "Enter 'yes' to continue: " choice
+read -erp "Enter \"yes\" to continue: " choice
 [ "$choice" = "yes" ] || exit 1
 
 
@@ -35,16 +33,16 @@ read -e -p "Enter 'yes' to continue: " choice
 print_heading "Dotfiles"
 
 # Symlink dotfile directories and files.
-for dotfile in $mac_setup/dotfiles/*; do
-  target="$HOME/.$(basename $dotfile)"
+for dotfile in "$mac_setup"/dotfiles/*; do
+  target=$HOME/.$(basename "$dotfile")
 
-  if [ -d $dotfile ]; then
+  if [ -d "$dotfile" ]; then
     # Directories.
-    [ ! -d $target ] && mkdir $target
-    create_symlink $dotfile/* $target
+    [ ! -d "$target" ] && mkdir "$target"
+    create_symlink "$dotfile"/* "$target"
   else
     # Files.
-    create_symlink $dotfile $target
+    create_symlink "$dotfile" "$target"
   fi
 done
 
@@ -56,12 +54,12 @@ done
 print_heading "Homebrew"
 
 # Install Homebrew.
-if [ ! $(command -v /usr/local/bin/brew) ] &&
-   [ ! $(command -v /opt/homebrew/bin/brew) ]; then
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-  # Exit if installation fails.
-  [ $? -ne 0 ] && print_error "Homebrew" && exit 1
+if [ ! "$(command -v /usr/local/bin/brew)" ] &&
+   [ ! "$(command -v /opt/homebrew/bin/brew)" ]; then
+  if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
+    # Exit if installation fails.
+    print_error "Homebrew" && exit 1
+  fi
 fi
 print_success "Homebrew"
 
@@ -74,7 +72,7 @@ print_success "Homebrew"
 eval "$($homebrew_prefix/bin/brew shellenv)"
 
 # Verify installation.
-[ $(which brew) = $homebrew_prefix/bin/brew ]
+[ "$(which brew)" = $homebrew_prefix/bin/brew ]
 print_result $? "Homebrew: Using $homebrew_prefix/bin/brew"
 
 
@@ -85,22 +83,22 @@ print_result $? "Homebrew: Using $homebrew_prefix/bin/brew"
 print_heading "Fish"
 brew_install "Fish" "fish"
 
-fish_path="$homebrew_prefix/bin/fish"
+fish_path=$homebrew_prefix/bin/fish
 
-# Add Fish path to '/etc/shells'.
-if [ ! $(grep $fish_path /etc/shells) ]; then
+# Add Fish path to /etc/shells.
+if ! grep -q $fish_path /etc/shells; then
   sudo sh -c "printf '$fish_path\n' >> /etc/shells"
 fi
 print_result $? "Fish: Add $fish_path to /etc/shells"
 
 # Change login shell to Fish.
-if [ $SHELL != $fish_path ]; then
-  sudo chsh -s $fish_path $USER
+if [ "$SHELL" != $fish_path ]; then
+  sudo chsh -s $fish_path "$USER"
 fi
 print_result $? "Fish: Change login shell to $fish_path"
 
 # Verify installation.
-[ $(which fish) = $fish_path ]
+[ "$(which fish)" = $fish_path ]
 print_result $? "Fish: Using $fish_path"
 
 
@@ -112,7 +110,7 @@ print_heading "asdf"
 brew_install "asdf" "asdf"
 
 # Add asdf to PATH.
-. $(brew --prefix asdf)/libexec/asdf.sh
+. "$(brew --prefix asdf)"/libexec/asdf.sh
 
 
 ########
@@ -128,7 +126,7 @@ brew_install "Ruby: Dependencies" "openssl@1.1 readline"
 asdf plugin add ruby https://github.com/asdf-vm/asdf-ruby.git
 case $? in
   0|2) print_success "Ruby: Install asdf-ruby plugin";;
-  *) print_error "Ruby: Install asdf-ruby plugin" && exit 1
+  *) print_error "Ruby: Install asdf-ruby plugin" && exit 1;;
 esac
 
 asdf install ruby latest
@@ -147,7 +145,7 @@ print_heading "Node.js"
 asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
 case $? in
   0|2) print_success "Node.js: Install asdf-nodejs plugin";;
-  *) print_error "Node.js: Install asdf-nodejs plugin" && exit 1
+  *) print_error "Node.js: Install asdf-nodejs plugin" && exit 1;;
 esac
 
 asdf install nodejs latest
@@ -164,10 +162,10 @@ print_result $? "Node.js: Set global Node.js with asdf"
 print_heading "Git"
 brew_install "Git" "git"
 
-git_path="$homebrew_prefix/bin/git"
+git_path=$homebrew_prefix/bin/git
 
 # Verify installation.
-[ $(which git) = $git_path ]
+[ "$(which git)" = $git_path ]
 print_result $? "Git: Using $git_path"
 
 
@@ -177,21 +175,21 @@ print_result $? "Git: Using $git_path"
 
 print_heading "GitHub SSH Keys"
 
-ssh_key="$HOME/.ssh/github"
+ssh_key=$HOME/.ssh/github
 
 # Set up new keys if either key (public or private) is missing.
-if [ ! -e $ssh_key ] || [ ! -e $ssh_key.pub ]; then
+if [ ! -e "$ssh_key" ] || [ ! -e "$ssh_key".pub ]; then
   # Generate a new key pair.
   key_name="$(hostname)_$(date '+%Y-%m-%d_%H:%M:%S')"
   ssh-keygen -t rsa -b 4096 -C "$key_name" -f "$ssh_key"
   print_result $? "GitHub SSH Keys: Generate a new key pair"
 
   # Create an SSH config file.
-  if [ ! -e $HOME/.ssh/config ]; then
-    touch $HOME/.ssh/config
+  if [ ! -e "$HOME"/.ssh/config ]; then
+    touch "$HOME"/.ssh/config
   fi
 
-  cat <<EOF > $HOME/.ssh/config
+  cat <<EOF > "$HOME"/.ssh/config
 Host *
   AddKeysToAgent yes
   UseKeychain yes
@@ -206,7 +204,7 @@ Host gist.github.com
     HostName github.com
     IdentityFile $ssh_key
 EOF
-  print_result $? "GitHub SSH Keys: Create an SSH config file: '$HOME/.ssh/config'"
+  print_result $? "GitHub SSH Keys: Create an SSH config file: $HOME/.ssh/config"
 
   # Purge all identities from the ssh-agent. Identities will be added
   # automatically by the SHH config when needed.
@@ -214,8 +212,8 @@ EOF
 
   # Add the public key to GitHub. 3 attempts so we don't spam the API
   # and get locked out.
-  public_key="$(cat $ssh_key.pub)"
-  for run in {1..3}
+  public_key=$(cat "$ssh_key".pub)
+  for (( i=0; i<3; ++i ))
   do
     key_uploaded="$(curl -f -s \
                     -u "$github_username" \
@@ -233,12 +231,12 @@ EOF
     # Failed all 3 attempts to add the public key to GitHub.
     print_error "GitHub SSH Keys: Add the public key to GitHub"
     # Remove keys.
-    rm $ssh_key $ssh_key.pub
+    rm "$ssh_key" "$ssh_key".pub
     # Purge all identities from the ssh-agent.
     ssh-add -D &>/dev/null
 
     print_notification "Cleaning up..."
-    print_notification "Removed '$ssh_key' and '$ssh_key.pub'"
+    print_notification "Removed $ssh_key and $ssh_key.pub"
     print_notification "Removed all identities from ssh-agent."
 
     # Exit.
@@ -265,11 +263,11 @@ git remote set-url origin git@github.com:$github_username/mac-setup.git
 print_heading "Rails"
 
 # Install Rails.
-if [ $(gem list '^rails$' -i) = "false" ]; then
-  gem install rails
-
-  # Exit if installation fails.
-  [ $? -ne 0 ] && print_error "Rails" && exit 1
+if [ "$(gem list '^rails$' -i)" = "false" ]; then
+  if ! gem install rails; then
+    # Exit if installation fails.
+    print_error "Rails" && exit 1
+  fi
 fi
 print_success "Rails"
 
@@ -281,8 +279,8 @@ print_success "Rails"
 print_heading "PostgreSQL"
 brew_install "PostgreSQL" "postgresql"
 
-if [ $(command -v psql) ]; then
-  # Start PostgresSQL.
+if [ "$(command -v psql)" ]; then
+  # Start PostgreSQL.
   brew services restart postgresql
   print_result $? "PostgreSQL: Started"
   # Wait a bit to ensure PostgreSQL has started.
@@ -291,7 +289,7 @@ if [ $(command -v psql) ]; then
   if ! psql -lqt | cut -d \| -f 1 | grep -qw "$USER"; then
     createdb
   fi
-  print_result $? "PostgreSQL: Create database '$USER'"
+  print_result $? "PostgreSQL: Create database \"$USER\""
 fi
 
 
@@ -302,7 +300,7 @@ fi
 print_heading "Redis"
 brew_install "Redis" "redis"
 
-if [ $(command -v redis-cli) ]; then
+if [ "$(command -v redis-cli)" ]; then
   # Start Redis.
   brew services restart redis
   print_result $? "Redis: Started"
@@ -324,8 +322,8 @@ brew_install "Vim" "vim"
 print_heading "Sublime Text Settings"
 
 # Symlink Sublime Text preferences.
-for sublime_text_user_dir in $HOME/Library/Application\ Support/Sublime\ Text*/Packages/User; do
-  create_symlink $mac_setup/app-settings/Preferences.sublime-settings \
+for sublime_text_user_dir in "$HOME"/Library/Application\ Support/Sublime\ Text*/Packages/User; do
+  create_symlink "$mac_setup"/app-settings/Preferences.sublime-settings \
                  "$sublime_text_user_dir"/Preferences.sublime-settings
 done
 
