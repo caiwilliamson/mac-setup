@@ -4,3 +4,6 @@
 /dotfiles/config/zsh/*
 !/dotfiles/config/zsh/p10k.zsh
 !/dotfiles/config/zsh/zshrc
+!/dotfiles/config/zsh/zsh-autosuggestions
+!/dotfiles/config/zsh/zsh-history-substring-search
+!/dotfiles/config/zsh/zsh-syntax-highlighting
