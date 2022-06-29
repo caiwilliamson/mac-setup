@@ -1,2 +1,2 @@
-*/config/fish/
-!/config/fish/config.fish
+/dotfiles/config/fish/*
+!/dotfiles/config/fish/config.fish
