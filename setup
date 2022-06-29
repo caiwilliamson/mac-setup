@@ -25,7 +25,7 @@ cd $mac_setup
 print_multiline "$(start_notice)"
 
 read -e -p "Enter 'yes' to continue: " choice
-[ "$choice" == "yes" ] || exit 1
+[ "$choice" = "yes" ] || exit 1
 
 
 ############
@@ -265,7 +265,7 @@ git remote set-url origin git@github.com:$github_username/mac-setup.git
 print_heading "Rails"
 
 # Install Rails.
-if [ $(gem list '^rails$' -i) == "false" ]; then
+if [ $(gem list '^rails$' -i) = "false" ]; then
   gem install rails
 
   # Exit if installation fails.
