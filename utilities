@@ -15,10 +15,7 @@ print_result() {
 }
 
 print_colour() {
-  colour="$1"
-  text="$2"
-
-  printf "%s%s$no_colour" "$colour" "$text"
+  printf "$1$2$no_colour"
 }
 
 print_multiline() {
