@@ -11,10 +11,10 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 export ZDOTDIR="$HOME/.config/zsh"
 
-export HOMEBREW_NO_ANALYTICS 1
-export EDITOR vim
+export HOMEBREW_NO_ANALYTICS=1
+export EDITOR="vim"
 # https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
-export RUBY_CONFIGURE_OPTS "--with-openssl-dir=$(brew --prefix openssl@1.1)"
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 
 # Add asdf to PATH.
 source "$(brew --prefix asdf)"/libexec/asdf.sh
