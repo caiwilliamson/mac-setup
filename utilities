@@ -15,7 +15,10 @@ print_result() {
 }
 
 print_colour() {
-  printf "$1$2$no_colour"
+  colour="$1"
+  text="$2"
+
+  printf "%s%s$no_colour" "$colour" "$text"
 }
 
 print_multiline() {
@@ -77,13 +80,15 @@ brew_install() {
   else
     # Install package.
     if [ -n "$cask" ]; then
-      brew install --cask $formula
-      # Exit if installation fails.
-      [ $? -ne 0 ] && print_error "$formula_readable_name" && exit 1
+      if ! brew install --cask "$formula"; then
+        # Exit if installation fails.
+        print_error "$formula_readable_name" && exit 1
+      fi
     else
-      brew install $formula
-      # Exit if installation fails.
-      [ $? -ne 0 ] && print_error "$formula_readable_name" && exit 1
+      if ! brew install "$formula"; then
+        # Exit if installation fails.
+        print_error "$formula_readable_name" && exit 1
+      fi
     fi
     print_success "$formula_readable_name"
   fi
