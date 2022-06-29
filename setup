@@ -111,7 +111,7 @@ print_result $? "Fish: Using $fish_path"
 print_heading "asdf"
 brew_install "asdf" "asdf"
 
-# Add asdf directories to PATH for the current shell session.
+# Add asdf to PATH.
 . $(brew --prefix asdf)/libexec/asdf.sh
 
 
