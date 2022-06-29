@@ -1,2 +1,6 @@
 /dotfiles/config/fish/*
 !/dotfiles/config/fish/config.fish
+
+/dotfiles/config/zsh/*
+!/dotfiles/config/zsh/p10k.zsh
+!/dotfiles/config/zsh/zshrc
