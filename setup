@@ -11,13 +11,6 @@ fi
 mac_setup="$HOME/.mac-setup" # Installation directory.
 github_username="caiwilliamson"
 
-# Set homebrew_prefix based on processor architecture.
-case $(uname -m) in
-  x86_64) homebrew_prefix="/usr/local";; # Intel.
-  arm64) homebrew_prefix="/opt/homebrew";; # Apple Silicon.
-  *) echo "Processor architecture not recognised" && exit 1
-esac
-
 # Clone mac-setup if it doesn't already exist.
 if [ ! -d $mac_setup ]; then
   mkdir $mac_setup
@@ -62,10 +55,9 @@ done
 
 print_heading "Homebrew"
 
-brew_path="$homebrew_prefix/bin/brew"
-
 # Install Homebrew.
-if [ ! $(command -v $brew_path) ]; then
+if [ ! $(command -v /usr/local/bin/brew) ] &&
+   [ ! $(command -v /opt/homebrew/bin/brew) ]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
   # Exit if installation fails.
@@ -73,12 +65,17 @@ if [ ! $(command -v $brew_path) ]; then
 fi
 print_success "Homebrew"
 
-# Add Homebrew directories to PATH for the current shell session.
-eval "$($brew_path shellenv)"
+# Locate Homebrew installation.
+[ -d /opt/homebrew ] &&
+  homebrew_prefix=/opt/homebrew || # Apple Silicon.
+  homebrew_prefix=/usr/local       # Intel.
 
-# Check that the right executable is being used.
-[ "$(which brew)" == $brew_path ]
-print_result $? "Homebrew: Using $brew_path"
+# Add brew to PATH and set some environment variables.
+eval "$($homebrew_prefix/bin/brew shellenv)"
+
+# Verify installation.
+[ $(which brew) = $homebrew_prefix/bin/brew ]
+print_result $? "Homebrew: Using $homebrew_prefix/bin/brew"
 
 
 ########
@@ -102,8 +99,8 @@ if [ $SHELL != $fish_path ]; then
 fi
 print_result $? "Fish: Change login shell to $fish_path"
 
-# Check that the right executable is being used.
-[ "$(which fish)" == $fish_path ]
+# Verify installation.
+[ $(which fish) = $fish_path ]
 print_result $? "Fish: Using $fish_path"
 
 
@@ -169,8 +166,8 @@ brew_install "Git" "git"
 
 git_path="$homebrew_prefix/bin/git"
 
-# Check that the right executable is being used.
-[ "$(which git)" == $git_path ]
+# Verify installation.
+[ $(which git) = $git_path ]
 print_result $? "Git: Using $git_path"
 
 
