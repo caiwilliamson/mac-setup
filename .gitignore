@@ -2,6 +2,7 @@
 !/dotfiles/.config/fish/config.fish
 
 /dotfiles/.config/zsh/*
+!/dotfiles/.config/zsh/powerlevel10k
 !/dotfiles/.config/zsh/zsh-autosuggestions
 !/dotfiles/.config/zsh/zsh-history-substring-search
 !/dotfiles/.config/zsh/zsh-syntax-highlighting
