@@ -1,9 +1,9 @@
 #!/bin/bash
 
-red='\033[1;31m'
-green='\033[1;32m'
-no_colour='\033[0m'
-no_colour_bold='\033[1m'
+red='[1;31m'
+green='[1;32m'
+no_colour='[0m'
+no_colour_bold='[1m'
 
 print_result() {
   if [ "$1" -eq 0 ]; then
@@ -14,33 +14,24 @@ print_result() {
   return "$1"
 }
 
-print_colour() {
-  printf "$1$2$no_colour"
-}
-
 print_multiline() {
-  print_colour "$no_colour_bold" \
-               "\n$1\n\n"
+  printf '\e%s\n%s\n\n\e%s' "$no_colour_bold" "$1" "$no_colour"
 }
 
 print_heading() {
-  print_colour "$no_colour_bold" \
-               "\n$1\n\n"
+  printf '\e%s\n%s\n\n\e%s' "$no_colour_bold" "$1" "$no_colour"
 }
 
 print_notification() {
-  print_colour "$no_colour_bold" \
-               "[ • ] $1\n"
+  printf '\e%s[ • ] %s\n\e%s' "$no_colour_bold" "$1" "$no_colour"
 }
 
 print_success() {
-  print_colour "$green" \
-               "[ ✔︎ ] $1\n"
+  printf '\e%s[ ✔︎ ] %s\n\e%s' "$green" "$1" "$no_colour"
 }
 
 print_error() {
-  print_colour "$red" \
-               "[ ✘ ] $1\n"
+  printf '\e%s[ ✘ ] %s\n\e%s' "$red" "$1" "$no_colour"
 }
 
 create_symlink() {
