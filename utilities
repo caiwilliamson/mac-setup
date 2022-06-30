@@ -44,18 +44,23 @@ print_error() {
 }
 
 create_symlink() {
-  local source_file="$1"
-  local target_file="$2"
+  local target="$1"  # The target file or directory of the symlink.
+  local symlink="$2" # The symlink name.
 
-  # Check to see if the source file exists because 'ln' doesn't.
-  if [ -e "$source_file" ]; then
-    if ln -fs "$source_file" "$target_file"; then
-      print_success "$target_file → $source_file"
+  # Check to see if the target exists because 'ln' doesn't.
+  if [ -e "$target" ]; then
+    # -f, --force:          Replace symlink if it already exists.
+    # -s, --symbolic:       Make symbolic links instead of hard links.
+    # -n, --no-dereference: If symlink points to an existing directory, replace
+    #                       it instead of creating another symlink inside it.
+
+    if ln -fsn "$target" "$symlink"; then
+      print_success "$symlink → $target"
       return 0
     fi
   fi
 
-  print_error "$target_file → $source_file"
+  print_error "$symlink → $target"
   return 1
 }
 
