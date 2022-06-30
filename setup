@@ -33,20 +33,13 @@ read -erp "Enter \"yes\" to continue: " choice
 print_heading "Dotfiles"
 
 # Symlink dotfile directories and files.
-for dotfile in "$mac_setup"/dotfiles/*; do
-  target=$HOME/.$(basename "$dotfile")
+find ~/.mac-setup/dotfiles -mindepth 1 -maxdepth 1 | while read -r dotfile; do
+  target=$HOME/$(basename "$dotfile")
 
-  if [ -d "$dotfile" ]; then
-    # Directories.
-    [ ! -d "$target" ] && mkdir "$target"
-    create_symlink "$dotfile"/* "$target"
-  else
-    # Files.
-    create_symlink "$dotfile" "$target"
-  fi
+  create_symlink "$dotfile" "$target"
 done
 
-
+exit 1
 ############
 # Homebrew #
 ############
