@@ -36,23 +36,29 @@ print_error() {
 
 create_symlink() {
   local target="$1"  # The target file or directory of the symlink.
-  local symlink="$2" # The symlink name.
+  local symlink="$2" # The symlink.
 
-  # Check to see if the target exists because 'ln' doesn't.
-  if [ -e "$target" ]; then
+  if [ ! -e "$target" ]; then
+    printf "%s doesn't exist.\n" "$target"
+    print_error "$symlink → $target" && exit 1
+  fi
+
+  if [ -e "$symlink" ] && [ ! -L "$symlink" ]; then
+    printf "%s is an existing file/folder. Won't replace it with a symlink.\n" "$symlink"
+    print_error "$symlink → $target" && exit 1
+  fi
+
+  if ln -fsn "$target" "$symlink"; then
     # -f, --force:          Replace symlink if it already exists.
     # -s, --symbolic:       Make symbolic links instead of hard links.
     # -n, --no-dereference: If symlink points to an existing directory, replace
     #                       it instead of creating another symlink inside it.
-
-    if ln -fsn "$target" "$symlink"; then
-      print_success "$symlink → $target"
-      return 0
-    fi
+    print_success "$symlink → $target"
+    return 0
   fi
 
   print_error "$symlink → $target"
-  return 1
+  exit 1
 }
 
 brew_install() {
