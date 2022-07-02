@@ -102,6 +102,16 @@ print_result $? "Fish: Using $fish_path"
 print_heading "asdf"
 brew_install "asdf" "asdf"
 
+# Ensure asdf installs config and data to the right location.
+export ASDF_CONFIG_FILE="$HOME/.config/asdf/.asdfrc"
+export ASDF_DATA_DIR="$HOME/.local/share/asdf/.asdf"
+
+# https://github.com/asdf-vm/asdf-ruby#install
+# https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
+brew_install "asdf: Ruby dependencies" "openssl@1.1 readline"
+RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+export RUBY_CONFIGURE_OPTS
+
 # Add asdf to PATH.
 . "$(brew --prefix asdf)"/libexec/asdf.sh
 
@@ -111,10 +121,6 @@ brew_install "asdf" "asdf"
 ########
 
 print_heading "Ruby"
-
-# https://github.com/asdf-vm/asdf-ruby#install
-# https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
-brew_install "Ruby: Dependencies" "openssl@1.1 readline"
 
 asdf plugin add ruby https://github.com/asdf-vm/asdf-ruby.git
 case $? in

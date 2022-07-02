@@ -1,3 +1,6 @@
+/dotfiles/.config/asdf/*
+!/dotfiles/.config/asdf/.asdfrc
+
 /dotfiles/.config/fish/*
 !/dotfiles/.config/fish/config.fish
 
