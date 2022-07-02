@@ -97,6 +97,30 @@ print_result $? "Fish: Change login shell to $fish_path"
 print_result $? "Fish: Using $fish_path"
 
 
+#######
+# Zsh #
+#######
+
+print_heading "Zsh"
+brew_install "Zsh" "zsh"
+
+zsh_path=$homebrew_prefix/bin/zsh
+
+# Add Zsh path to /etc/shells.
+if ! grep -q $zsh_path /etc/shells; then
+  sudo sh -c "printf '$zsh_path\n' >> /etc/shells"
+fi
+print_result $? "Zsh: Add $zsh_path to /etc/shells"
+
+# Add a directory for zsh_history otherwise it wont save.
+mkdir -p "$HOME"/.local/share/zsh
+print_result $? "Zsh: Create $HOME/.local/share/zsh/"
+
+# Verify installation.
+[ "$(which zsh)" = $zsh_path ]
+print_result $? "Zsh: Using $zsh_path"
+
+
 ########
 # asdf #
 ########

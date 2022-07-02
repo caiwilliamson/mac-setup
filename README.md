@@ -6,6 +6,7 @@ Installs/configures:
 * Dotfiles
 * Homebrew
 * Fish
+* Zsh
 * asdf
 * Ruby
 * Node.js
