@@ -324,7 +324,7 @@ print_heading "Sublime Text Settings"
 
 # Symlink Sublime Text preferences.
 for sublime_text_user_dir in "$HOME"/Library/Application\ Support/Sublime\ Text*/Packages/User; do
-  create_symlink "$mac_setup"/app-settings/Preferences.sublime-settings \
+  create_symlink "$mac_setup"/app_settings/Sublime\ Text/Preferences.sublime-settings \
                  "$sublime_text_user_dir"/Preferences.sublime-settings
 done
 
@@ -352,7 +352,7 @@ print_heading "Terminal Profile"
 
 brew_install "Terminal Profile: Install Hack font" "font-hack-nerd-font" "homebrew/cask-fonts" "cask"
 
-./set_terminal_profile.applescript
+./app_settings/Terminal/set_terminal_profile.applescript
 print_result $? "Terminal Profile: Set profile"
 
 
