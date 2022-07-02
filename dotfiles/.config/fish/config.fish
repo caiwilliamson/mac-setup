@@ -9,7 +9,11 @@ eval ($HOMEBREW_PREFIX/bin/brew shellenv)
 set -gx XDG_CONFIG_HOME $HOME/.config
 set -gx XDG_CACHE_HOME  $HOME/.cache
 set -gx XDG_DATA_HOME   $HOME/.local/share
-set -gx ZDOTDIR         $HOME/.config/zsh
+
+set -gx ZDOTDIR          $XDG_CONFIG_HOME/zsh
+
+set -gx ASDF_CONFIG_FILE $XDG_CONFIG_HOME/asdf/.asdfrc
+set -gx ASDF_DATA_DIR    $XDG_DATA_HOME/asdf/.asdf
 
 set -U  fish_greeting # Disable greeting.
 set -gx HOMEBREW_NO_ANALYTICS 1
