@@ -9,9 +9,9 @@ fi
 alias ls="ls -G"
 
 # History settings.
+HISTFILE="$XDG_DATA_HOME/zsh/zsh_history"
 HISTSIZE=15000
 SAVEHIST=10000
-HISTFILE=~/.cache/zsh/history
 
 setopt extended_history
 setopt append_history
