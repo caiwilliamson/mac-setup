@@ -25,5 +25,5 @@ set -gx RUBY_CONFIGURE_OPTS --with-openssl-dir=(brew --prefix openssl@1.1)
 source (brew --prefix asdf)/libexec/asdf.fish
 
 # Add subl and smerge to PATH.
-fish_add_path --append /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/
-fish_add_path --append /Applications/Sublime\ Merge.app/Contents/SharedSupport/bin/
+fish_add_path --append --path /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/
+fish_add_path --append --path /Applications/Sublime\ Merge.app/Contents/SharedSupport/bin/
