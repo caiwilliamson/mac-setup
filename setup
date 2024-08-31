@@ -374,7 +374,7 @@ print_result $? "MacOS Settings: Stop requests to use new disks for Time Machine
 
 print_heading "Terminal Profile"
 
-brew_install "Terminal Profile: Install Hack font" "font-hack-nerd-font" "homebrew/cask-fonts" "cask"
+brew_install "Terminal Profile: Install Hack font" "font-hack-nerd-font" "" "cask"
 
 ./app_settings/Terminal/set_terminal_profile.applescript
 print_result $? "Terminal Profile: Set profile"
