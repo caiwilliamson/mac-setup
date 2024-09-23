@@ -3,6 +3,7 @@
   "extensions.ignoreRecommendations": true,
   "files.trimTrailingWhitespace": true,
   "terminal.integrated.env.osx": {
+    // https://github.com/asdf-vm/asdf/issues/1584#issuecomment-2122240530
     "PATH": ""
   }
 }
