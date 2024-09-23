@@ -15,6 +15,8 @@ export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/.asdfrc"
 export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf/.asdf"
 
+export IRBRC="$XDG_CONFIG_HOME/irb/.irbrc"
+
 export HOMEBREW_NO_ANALYTICS=1
 export EDITOR="vim"
 # https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
