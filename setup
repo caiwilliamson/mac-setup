@@ -352,6 +352,16 @@ for sublime_text_user_dir in "$HOME"/Library/Application\ Support/Sublime\ Text*
                  "$sublime_text_user_dir"/Preferences.sublime-settings
 done
 
+###############################
+# Visual Studio Code Settings #
+###############################
+
+print_heading "Visual Studio Code Settings"
+
+# Symlink Visual Studio Code settings.
+create_symlink "$mac_setup"/app_settings/Visual\ Studio\ Code/settings.json \
+               "$HOME"/Library/Application\ Support/Code/User/settings.json
+
 
 ##################
 # MacOS Settings #

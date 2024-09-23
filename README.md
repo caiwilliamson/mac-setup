@@ -17,6 +17,7 @@ Installs/configures:
 * Redis
 * Vim
 * Sublime Text Settings
+* Visual Studio Code Settings
 * MacOS Settings
 * Terminal Profile
 
