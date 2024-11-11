@@ -134,8 +134,8 @@ export ASDF_DATA_DIR="$HOME/.local/share/asdf/.asdf"
 
 # https://github.com/asdf-vm/asdf-ruby#install
 # https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
-brew_install "asdf: Ruby dependencies" "openssl@1.1 readline"
-RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+brew_install "asdf: Ruby dependencies" "openssl@3 readline libyaml gmp autoconf"
+RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@3)"
 export RUBY_CONFIGURE_OPTS
 
 # Add asdf to PATH.
