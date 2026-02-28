@@ -19,8 +19,6 @@ export IRBRC="$XDG_CONFIG_HOME/irb/.irbrc"
 
 export HOMEBREW_NO_ANALYTICS=1
 export EDITOR="vim"
-# https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 
 # Add asdf to PATH.
 source "$(brew --prefix asdf)"/libexec/asdf.sh
