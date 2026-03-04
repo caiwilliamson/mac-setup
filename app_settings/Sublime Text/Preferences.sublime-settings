@@ -14,4 +14,5 @@
 	"trim_trailing_white_space_on_save": true,
 	"theme": "auto",
 	"color_scheme": "Packages/Color Scheme - Default/Monokai.sublime-color-scheme",
+	"index_files": true,
 }
