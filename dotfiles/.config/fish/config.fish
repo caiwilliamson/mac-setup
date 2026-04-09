@@ -20,8 +20,6 @@ set -gx IRBRC            $XDG_CONFIG_HOME/irb/.irbrc
 set -U  fish_greeting # Disable greeting.
 set -gx HOMEBREW_NO_ANALYTICS 1
 set -gx EDITOR vim
-# https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
-set -gx RUBY_CONFIGURE_OPTS --with-openssl-dir=(brew --prefix openssl@1.1)
 
 # Add asdf to PATH.
 source (brew --prefix asdf)/libexec/asdf.fish
