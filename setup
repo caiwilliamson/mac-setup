@@ -157,8 +157,8 @@ esac
 asdf install ruby latest
 print_result $? "Ruby: Install Ruby with asdf"
 
-asdf global ruby latest
-print_result $? "Ruby: Set global Ruby with asdf"
+asdf set -u ruby latest
+print_result $? "Ruby: Set Ruby version with asdf"
 
 
 ###########
@@ -176,8 +176,8 @@ esac
 asdf install nodejs latest
 print_result $? "Node.js: Install Node.js with asdf"
 
-asdf global nodejs latest
-print_result $? "Node.js: Set global Node.js with asdf"
+asdf set -u nodejs latest
+print_result $? "Node.js: Set Node.js version with asdf"
 
 
 #######
