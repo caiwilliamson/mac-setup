@@ -206,7 +206,7 @@ ssh_key=$HOME/.ssh/github
 if [ ! -e "$ssh_key" ] || [ ! -e "$ssh_key".pub ]; then
   # Generate a new key pair.
   key_name="$(hostname)_$(date '+%Y-%m-%d_%H:%M:%S')"
-  ssh-keygen -t rsa -b 4096 -C "$key_name" -f "$ssh_key"
+  ssh-keygen -t ed25519 -C "$key_name" -f "$ssh_key"
   print_result $? "GitHub SSH Keys: Generate a new key pair"
 
   # Create an SSH config file.
